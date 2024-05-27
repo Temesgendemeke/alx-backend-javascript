@@ -4,5 +4,5 @@ export default function iterateThroughObject(reportWithIterator) {
     array.push(value);
   }
 
-  return array.toString().replaceAll(',', ' | ');
+  return array.toString().replaceAll(',', " | ");
 }
