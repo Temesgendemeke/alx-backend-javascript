@@ -1,29 +1,21 @@
 const fs = require('fs');
 
 function countStudents(path){
+    try{
+    let data = fs.readFileSync(path, 'utf8').toString().split('\n')
 
-fs.readFile(path, 'utf8', (err, data)=>{
-
-    if (err){
-        throw new Error("Cannot load the database")
+    let parsed_data = data.slice(1, data.length)
+    let cs = parsed_data.filter((student) => student.split(',')[3] === 'CS')
+    let swe = parsed_data.filter((student) => student.split(',')[3] === 'SWE')
+    
+    console.log(`Number of students: ${parsed_data.length}`)
+    console.log(`Number of students in CS: ${cs.length}. List: ${cs.map((student) => student.split(',')[0]).join(', ')}`)
+    console.log(`Number of students in SWE: ${swe.length}. List: ${swe.map((student) => student.split(',')[0]).join(', ')}`)
     }
-
-    let number_of_students = data.split('\n').length - 1
-    let cs_students = []
-    let swe_students = []
-
-    for (let i = 1; i <= number_of_students; i++){
-        if (data.split('\n')[i].split(',')[3] === 'CS'){
-            cs_students.push(data.split('\n')[i].split(','))
-        }
-        else if (data.split('\n')[i].split(',')[3] === 'SWE'){
-            swe_students.push(data.split('\n')[i].split(','))
-        }
+    catch (error){
+        throw new Error("Cannot load the database");
     }
-    console.log(`Number of students: ${number_of_students}`)
-    console.log(`Number of students in CS: ${cs_students.length}. List: ${cs_students.map((student)=>student[0]).join(', ')}`)
-    console.log(`Number of students in SWE: ${swe_students.length}. List: ${swe_students.map((student)=>student[0]).join(', ')}`)
-})
-}
+    
+}    
 
 module.exports = countStudents;
