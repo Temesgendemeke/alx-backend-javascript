@@ -2,7 +2,7 @@
 import { readDatabase } from '../utils.js';
 
 export class StudentsController {
-  static async getAllStudents(req, res) {
+  static async getAllStudents (req, res) {
     try {
       const students = await readDatabase(process.argv[3]);
       let response = 'This is the list of our students\n';
@@ -15,7 +15,7 @@ export class StudentsController {
     }
   }
 
-  static async getAllStudentsByMajor(req, res) {
+  static async getAllStudentsByMajor (req, res) {
     const { major } = req.params;
     if (!['CS', 'SWE'].includes(major)) {
       return res.status(500).send('Major parameter must be CS or SWE');
