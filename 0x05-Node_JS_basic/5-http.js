@@ -9,7 +9,7 @@ const databasePath = process.argv[2]; // Assuming the database file is named 'da
 const countStudents = async (path) => {
   try {
     const data = await fs.readFile(path, 'utf-8');
-    const lines = data.split('\n').filter((line) => line.trim() !== '');
+    const lines = data.trim().split('\n').filter((line) => line.trim() !== '');
     if (lines.length <= 1) throw new Error('Cannot load the database');
 
     const students = lines.slice(1);
