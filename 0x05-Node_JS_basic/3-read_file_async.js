@@ -6,7 +6,7 @@ const countStudents = (path) => {
       .then((data) => {
         const lines = data.split('\n').filter((line) => line !== '');
         if (lines.length === 0) {
-          throw new Error('No data found');
+          throw new Error('Cannot load the database');
         }
 
         while (lines[lines.length - 1] === '') {
