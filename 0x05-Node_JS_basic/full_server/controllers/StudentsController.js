@@ -1,7 +1,7 @@
 // full_server/controllers/StudentsController.js
 import { readDatabase } from '../utils.js';
 
-export class StudentsController {
+class StudentsController {
   static async getAllStudents (req, res) {
     try {
       const students = await readDatabase(process.argv[3]);
@@ -29,3 +29,5 @@ export class StudentsController {
     }
   }
 }
+
+export default StudentsController;

@@ -1,7 +1,7 @@
 // full_server/utils.js
 import fs from 'fs/promises';
 
-export const readDatabase = async (path) => {
+const readDatabase = async (path) => {
   try {
     const data = await fs.readFile(path, 'utf8');
     const lines = data.split('\n').filter((line) => line);
@@ -16,3 +16,5 @@ export const readDatabase = async (path) => {
     throw new Error('Cannot load the database');
   }
 };
+
+export default readDatabase;
