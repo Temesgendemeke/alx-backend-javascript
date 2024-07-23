@@ -1,25 +1,59 @@
 const http = require('http');
-const countStudents = require('./3-read_file_async');
+const { stdout } = require('process');
+const fs = require('fs').promises;
 
-const hostname = '192.0.0.1';
+const hostname = '127.0.0.1';
 const port = 1245;
-const path = process.argv[2];
+const databasePath = 'database.csv'; // Assuming the database file is named 'database.csv'
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    if (req.url === '/students') {
-        res.write('This is the list of our students\n');
-    } else if (req.url === '/students/cs') {
-        res.write('This is the list of our CS students\n');
-        countStudents(path)
-    } else {
-        res.write('Hello Holberton School!');
+const countStudents = async (path) => {
+  try {
+    const data = await fs.readFile(path, 'utf-8');
+    const lines = data.split('\n').filter((line) => line.trim() !== '');
+    if (lines.length <= 1) throw new Error('No data found');
+
+    const students = lines.slice(1); // Exclude header
+    const fields = {};
+
+    for (const student of students) {
+      const [, , , field] = student.split(',');
+      if (!field) continue; // Skip if no field
+      if (!fields[field]) fields[field] = [];
+      const name = student.split(',')[0];
+      fields[field].push(name);
     }
-  });
 
-  server.listen(port, hostname, () => {
-    stdout.write('...');
-  });
+    let message = `Number of students: ${students.length}\n`;
+    Object.entries(fields).forEach(([field, names]) => {
+      message += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
+    });
 
-module.exports = server;
+    return message;
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
+};
+
+const app = http.createServer(async (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+
+  if (req.url === '/') {
+    res.end('Hello Holberton School!');
+  } else if (req.url === '/students') {
+    try {
+      const message = await countStudents(databasePath);
+      res.end(`This is the list of our students${message}`);
+    } catch (error) {
+      res.end(error.message);
+    }
+  } else {
+    res.end('Hello Holberton School!');
+  }
+});
+
+app.listen(port, hostname, () => {
+  stdout.write('...');
+});
+
+module.exports = app;
