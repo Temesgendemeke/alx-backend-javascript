@@ -1,23 +1,11 @@
 const fs = require('fs')
 
-fs.readFile('database.csv', 'utf8', (err, data)=>{
+data = fs.readFileSync('database.csv', 'utf8').toString().split('\n')
 
-    if (err){
-        throw new Error("Cannot load the database")
-    }
-    number_of_students = data.split('\n').length - 1
-    cs_students = []
-    swe_students = []
+parsed_data = data.slice(1, data.length)
+cs = []
+swe = []
+console.log(`Number of students: ${parsed_data.length}`)
+console.log(`Number of students in FIELD: 6. List: LIST_OF_FIRSTNAMES`)
 
-    for (let i = 0; i <= number_of_students; i++){
-        if (data.split('\n')[i].split(',')[3] === 'CS'){
-            cs_students.push(data.split('\n')[i].split(','))
-        }
-        else if (data.split('\n')[i].split(',')[3] === 'SWE'){
-            swe_students.push(data.split('\n')[i].split(','))
-        }
-    }
-    console.log(`Number of students: ${number_of_students}`)
-    console.log(`Number of students in CS: ${cs_students.length}. List: ${cs_students.map((student)=>student[0]).join(', ')}`)
-    console.log(`Number of students in SWE: ${swe_students.length}. List: ${swe_students.map((student)=>student[0]).join(', ')}`)
-})
+
