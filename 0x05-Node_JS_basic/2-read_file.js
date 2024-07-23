@@ -2,19 +2,26 @@ const fs = require('fs');
 
 const countStudents = (path) => {
     try {
-        const data = fs.readFileSync(path, 'utf8').toString().split('\n');
-        const parsedData = data.slice(1, data.length);
-        subject = {};
-        for (const student of parsedData) {
-            if (student.split(',')[3] in subject) {
-                subject[student.split(',')[3]].push(student.split(',')[0]);
-            } else {
-                subject[student.split(',')[3]] = [student.split(',')[0]];
+        let data = fs.readFileSync(path, 'utf8').toString().split('\n');
+        data = data.slice(1, data.length);
+        let student = {}
+
+        for (const row of data) {
+            const studentData = row.split(',');
+            if (!student[studentData[3]]) {
+                student[studentData[3]] = [];
+            }
+            student[studentData[3]].push(studentData[0]);
+        }
+
+        console.log(`Number of students: ${data.length}`);
+        for (const key in student) {
+            if (key) {
+                const list = student[key];
+                console.log(`Number of students in ${key}: ${list.length}. List: ${list.join(', ')}`);
             }
         }
-        console.log(`Number of students: ${parsedData.length}`);
-        console.log(`Number of students in CS: ${subject.CS.length}. List: ${subject.CS.join(', ')}`);
-        console.log(`Number of students in SWE: ${subject.SWE.length}. List: ${subject.SWE.join(', ')}`);
+
     } catch (error) {
         throw new Error('Cannot load the database');
     }
