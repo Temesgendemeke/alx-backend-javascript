@@ -18,6 +18,6 @@ describe('Calculations', function() {
   });
 
   it('should throw an error when dividing by zero', function() {
-    expect(() => calculateNumber('DIVIDE', 6, 0)).to.equal('Error');
+    expect(calculateNumber('DIVIDE', 6, 0)).to.equal('Error');
   });
 });
