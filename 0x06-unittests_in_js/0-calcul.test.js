@@ -7,7 +7,7 @@ describe('calculateNumber', function() {
     assert.strictEqual(calculateNumber(1.5, 3.7), 6);
     assert.strictEqual(calculateNumber(2.8, 2.3), 5);
     assert.strictEqual(calculateNumber(-1.2, 2.3), 1);
-    assert.strictEqual(calculateNumber(-1.5, -2.5), -4);
+    assert.strictEqual(calculateNumber(-1.5, -2.5), -3);
   });
 
   it('should handle edge cases', function() {
@@ -17,4 +17,3 @@ describe('calculateNumber', function() {
     assert.strictEqual(calculateNumber(0.1, 0.1), 0);
   });
 });
-
